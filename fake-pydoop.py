@@ -33,20 +33,31 @@ def print_usage(out, msg = None):
 def parse_args(argv):
     if len(argv) == 0: return argv
     i = 0
+    filename = None
+    limit = 100
     while i < len(argv):
+        key = None
+        if '=' in argv[i]:
+            (key, val) = argv[i].split('=')
+            key = key.strip()
+            val = val.strip()
         if argv[i] == "--help" or argv[i] == "-h":
             print_usage(sys.stdout)
             sys.exit(0)
-        elif argv[i] == "--fp-input-records-limit":
-            i += 1
-            if i >= len(argv) or not argv[i].isdigit():
+        elif argv[i] == "--unlimited":
+            limit = None
+            continue
+        elif key == "--fp-input-records-limit":
+            if i >= len(argv) or not val.isdigit():
                 print_usage(sys.stderr,
                             "--fp-input-records-limit expects numeric param")
                 sys.exit(1)
-            os.environ["fake.pydoop.input.records.limit"] = argv[i]
+            limit = val
             i += 1
             continue
         break
+    if limit != None:
+        os.environ["fake.pydoop.input.records.limit"] = str(limit)
     return argv[i], argv[i + 1:]
 
 def main():
