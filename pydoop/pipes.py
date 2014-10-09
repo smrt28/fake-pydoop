@@ -16,6 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+import sys
 import os
 from pydoop.sequencefile.util.ReflectionUtils import hadoopClassFromName
 
@@ -287,6 +289,7 @@ def runTask(factory):
     i = 0
     stop = False
     limit = int(os.environ.get("fake.pydoop.input.records.limit", -1))
+    limit = 12500
     while not stop:
         for map_task, map_result in map_tasks:
             entry = file_reader.next()

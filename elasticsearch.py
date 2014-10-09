@@ -2,7 +2,7 @@
 class Indices:
     def __init__(self):
         pass
-    
+
     def exists(self, key):
         return True
 
